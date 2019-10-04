@@ -1,0 +1,34 @@
+FROM centos:7.5.1804
+
+MAINTAINER Tashrif Billah <tbillah@bwh.harvard.edu>
+
+# set up user and working directory
+ARG USER=pnlbwh
+ENV USER="$USER"
+ARG CWD=/root
+WORKDIR $CWD
+ENV PWD="$CWD"
+
+# libraries and commands for FSL
+RUN yum -y update \
+    && yum -y install epel-release wget file bzip2 openblas-devel which \
+    libmng libpng12 libSM gtk2 mesa-dri-drivers
+
+# install FSL, -V 5.0.11, you are welcome to change it below
+RUN wget https://fsl.fmrib.ox.ac.uk/fsldownloads/fslinstaller.py -O fslinstaller.py \
+    && python fslinstaller.py -V 6.0.1 -d `pwd`/fsl-5.0.11-centos7 -p
+
+# setup FSL environment
+ENV FSLDIR="$PWD/fsl-5.0.11-centos7"
+ENV PATH="$FSLDIR/bin/:$PATH" \
+	FSLMULTIFILEQUIT=TRUE \
+	FSLGECUDAQ=cuda.q \
+	FSLTCLSH="$FSLDIR/bin/fsltclsh" \
+	FSLWISH="$FSLDIR/bin/fslwish" \
+	FSLOUTPUTTYPE=NIFTI_GZ
+
+
+# apply patch
+RUN $FSLDIR/fslpython/bin/conda install -y -n fslpython -c conda-forge deprecation==1.*
+
+
