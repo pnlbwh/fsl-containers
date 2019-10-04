@@ -96,7 +96,7 @@ Follow steps mentioned [here](https://github.com/tashrifbillah/glxgears-containe
     
     (inside the shell) fsleyes
 
-Details can be found [here](https://github.com/tashrifbillah/glxgears-containers#linuxmac-1
+Details can be found [here](https://github.com/tashrifbillah/glxgears-containers#linuxmac-1)
 
 
 **Windows**
